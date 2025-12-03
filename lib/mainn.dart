@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:template/home_page.dart';
 import 'package:template/splash_screen.dart';
 import 'package:template/home_page.dart';
+import 'package:template/my_order_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const MyOrderPage(),
     );
   }
 }
