@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsetsGeometry.symmetric(horizontal: 30),
             child: TextField(
               decoration: InputDecoration(
-                hintText: "Search",
+                hintText: "Cari Kopi mu",
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -48,10 +48,10 @@ class HomePage extends StatelessWidget {
                       children: [
                         Image(
                           height: 130,
-                          image: AssetImage("assets/images/splash.png"),
+                          image: AssetImage("assets/images/americano.jpg"),
                         ),
                         SizedBox(width: 20),
-                        Expanded(child: Text("Kopi Latte")),
+                        Expanded(child: Text("americano")),
                         Column(children: [Icon(Icons.star), Text("5")]),
                       ],
                     ),
@@ -60,10 +60,10 @@ class HomePage extends StatelessWidget {
                       children: [
                         Image(
                           height: 130,
-                          image: AssetImage("assets/images/splash.png"),
+                          image: AssetImage("assets/images/gula aren.jpg"),
                         ),
                         SizedBox(width: 20),
-                        Expanded(child: Text("Kopi Latte")),
+                        Expanded(child: Text("gula aren")),
                         Icon(Icons.star),
                       ],
                     ),
@@ -72,34 +72,10 @@ class HomePage extends StatelessWidget {
                       children: [
                         Image(
                           height: 130,
-                          image: AssetImage("assets/images/splash.png"),
+                          image: AssetImage("assets/images/latte.jpg"),
                         ),
                         SizedBox(width: 20),
-                        Expanded(child: Text("Kopi Latte")),
-                        Icon(Icons.star),
-                      ],
-                    ),
-
-                    Row(
-                      children: [
-                        Image(
-                          height: 130,
-                          image: AssetImage("assets/images/splash.png"),
-                        ),
-                        SizedBox(width: 20),
-                        Expanded(child: Text("Kopi Latte")),
-                        Icon(Icons.star),
-                      ],
-                    ),
-
-                    Row(
-                      children: [
-                        Image(
-                          height: 130,
-                          image: AssetImage("assets/images/splash.png"),
-                        ),
-                        SizedBox(width: 20),
-                        Expanded(child: Text("Kopi Latte")),
+                        Expanded(child: Text("Latte")),
                         Icon(Icons.star),
                       ],
                     ),
