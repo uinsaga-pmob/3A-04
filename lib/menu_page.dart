@@ -19,7 +19,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: "Americano",
-                      price: "15.000",
+                      price: "15000",
                     ),
                   ),
                 );
@@ -28,7 +28,7 @@ class MenuPage extends StatelessWidget {
                 image: "assets/images/americano.jpg",
                 title: "Americano",
                 description: "Minuman kopi yang dibuat dari espresso yang ditambahkan air panas, sehingga rasanya lebih ringan dibanding espresso, mirip kopi hitam tapi tetap punya aroma khas espresso.",
-                price: "15.000",
+                price: "15000",
               ),
             ),
             GestureDetector(
@@ -38,7 +38,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: "Gula Aren",
-                      price: "20.000",
+                      price: "20000",
                     ),
                   ),
                 );
@@ -47,7 +47,7 @@ class MenuPage extends StatelessWidget {
                 image: "assets/images/gula aren.jpg",
                 title: "Gula Aren",
                 description: "Minuman kopi yang memadukan kopi hitam dengan manis alami dari gula aren, menghasilkan rasa manis legit, hangat, dan aroma khas karamel yang lembut.",
-                price: "20.000",
+                price: "20000",
               ),
             ),
             GestureDetector(
@@ -57,7 +57,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: " Latte",
-                      price: "22.000",
+                      price: "22000",
                     ),
                   ),
                 );
@@ -66,7 +66,7 @@ class MenuPage extends StatelessWidget {
                 image: "assets/images/latte.jpg",
                 title: "Kopi Latte",
                 description: "Minuman kopi berbahan espresso dan susu steamed, dengan rasa lembut, creamy, dan tidak terlalu pahit, cocok untuk penikmat kopi yang ringan.",
-                price: "22.000",
+                price: "22000",
               ),
             ),
           ],
