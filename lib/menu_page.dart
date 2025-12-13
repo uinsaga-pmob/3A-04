@@ -19,7 +19,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: "Americano",
-                      price: "15000",
+                      price: "15.000",
                     ),
                   ),
                 );
@@ -27,8 +27,8 @@ class MenuPage extends StatelessWidget {
               child: const MenuItemCard(
                 image: "assets/images/americano.jpg",
                 title: "Americano",
-                description: "Kopi hitam panas",
-                price: "15000",
+                description: "Minuman kopi yang dibuat dari espresso yang ditambahkan air panas, sehingga rasanya lebih ringan dibanding espresso, mirip kopi hitam tapi tetap punya aroma khas espresso.",
+                price: "15.000",
               ),
             ),
             GestureDetector(
@@ -38,7 +38,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: "Gula Aren",
-                      price: "20000",
+                      price: "20.000",
                     ),
                   ),
                 );
@@ -46,8 +46,8 @@ class MenuPage extends StatelessWidget {
               child: const MenuItemCard(
                 image: "assets/images/gula aren.jpg",
                 title: "Gula Aren",
-                description: "Kopi susu creamy",
-                price: "20000",
+                description: "Minuman kopi yang memadukan kopi hitam dengan manis alami dari gula aren, menghasilkan rasa manis legit, hangat, dan aroma khas karamel yang lembut.",
+                price: "20.000",
               ),
             ),
             GestureDetector(
@@ -57,16 +57,16 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: " Latte",
-                      price: "22000",
+                      price: "22.000",
                     ),
                   ),
                 );
               },
               child: const MenuItemCard(
                 image: "assets/images/latte.jpg",
-                title: "Matcha Latte",
-                description: "Kopi latte",
-                price: "22000",
+                title: "Kopi Latte",
+                description: "Minuman kopi berbahan espresso dan susu steamed, dengan rasa lembut, creamy, dan tidak terlalu pahit, cocok untuk penikmat kopi yang ringan.",
+                price: "22.000",
               ),
             ),
           ],

@@ -26,7 +26,7 @@ class _TransactionPageState extends State<TransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 110, 75),
+      backgroundColor: const Color.fromARGB(255, 194, 128, 103),
       appBar: AppBar(
         title: const Text("Transaksi"),
       ),
