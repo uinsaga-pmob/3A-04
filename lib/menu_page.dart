@@ -69,6 +69,63 @@ class MenuPage extends StatelessWidget {
                 price: "22000",
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TransactionPage(
+                      menuTitle: " Affogato",
+                      price: "26000",
+                    ),
+                  ),
+                );
+              },
+              child: const MenuItemCard(
+                image: "assets/images/Affogato.jpeg",
+                title: "Affogato",
+                description: "Minuman kopi dengan es cream",
+                price: "26000",
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TransactionPage(
+                      menuTitle: " Caramel",
+                      price: "27000",
+                    ),
+                  ),
+                );
+              },
+              child: const MenuItemCard(
+                image: "assets/images/Caramel.jpeg",
+                title: "Caramel",
+                description: "Minuman kopi dengan caramel",
+                price: "27000",
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TransactionPage(
+                      menuTitle: " Matcha Latte",
+                      price: "24000",
+                    ),
+                  ),
+                );
+              },
+              child: const MenuItemCard(
+                image: "assets/images/Matcha Latte.jpeg",
+                title: "Matcha Latte",
+                description: "Minuman rasa matcha",
+                price: "24000",
+              ),
+            ),
           ],
         ),
       ),
