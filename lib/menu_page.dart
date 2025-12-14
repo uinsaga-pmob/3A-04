@@ -76,7 +76,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: " Affogato",
-                      price: "27000",
+                      price: "26000",
                     ),
                   ),
                 );
@@ -85,7 +85,7 @@ class MenuPage extends StatelessWidget {
                 image: "assets/images/Affogato.jpeg",
                 title: "Affogato",
                 description: "Perpaduan espresso panas dan es krim vanila dingin. Rasa pahit kopi yang kuat berpadu dengan manis dan lembutnya es krim, menciptakan sensasi kontras yang kaya dan menyegarkan.",
-                price: "27000",
+                price: "26000",
               ),
             ),
             GestureDetector(
@@ -95,7 +95,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: " Caramel",
-                      price: "26000",
+                      price: "27000",
                     ),
                   ),
                 );
@@ -104,7 +104,7 @@ class MenuPage extends StatelessWidget {
                 image: "assets/images/Caramel.jpeg",
                 title: "Caramel",
                 description: "Kombinasi espresso, susu hangat, dan sirup caramel yang manis dan creamy. Memiliki aroma caramel yang menggoda dengan rasa kopi yang lembut, cocok untuk pencinta kopi manis.",
-                price: "26000",
+                price: "27000",
               ),
             ),
             GestureDetector(
