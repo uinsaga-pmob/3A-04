@@ -76,7 +76,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: " Affogato",
-                      price: "26000",
+                      price: "27000",
                     ),
                   ),
                 );
@@ -84,8 +84,8 @@ class MenuPage extends StatelessWidget {
               child: const MenuItemCard(
                 image: "assets/images/Affogato.jpeg",
                 title: "Affogato",
-                description: "Minuman kopi dengan es cream",
-                price: "26000",
+                description: "Perpaduan espresso panas dan es krim vanila dingin. Rasa pahit kopi yang kuat berpadu dengan manis dan lembutnya es krim, menciptakan sensasi kontras yang kaya dan menyegarkan.",
+                price: "27000",
               ),
             ),
             GestureDetector(
@@ -95,7 +95,7 @@ class MenuPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
                       menuTitle: " Caramel",
-                      price: "27000",
+                      price: "26000",
                     ),
                   ),
                 );
@@ -103,8 +103,8 @@ class MenuPage extends StatelessWidget {
               child: const MenuItemCard(
                 image: "assets/images/Caramel.jpeg",
                 title: "Caramel",
-                description: "Minuman kopi dengan caramel",
-                price: "27000",
+                description: "Kombinasi espresso, susu hangat, dan sirup caramel yang manis dan creamy. Memiliki aroma caramel yang menggoda dengan rasa kopi yang lembut, cocok untuk pencinta kopi manis.",
+                price: "26000",
               ),
             ),
             GestureDetector(
@@ -122,7 +122,7 @@ class MenuPage extends StatelessWidget {
               child: const MenuItemCard(
                 image: "assets/images/Matcha Latte.jpeg",
                 title: "Matcha Latte",
-                description: "Minuman rasa matcha",
+                description: "Minuman berbahan bubuk matcha premium yang dicampur dengan susu creamy. Menghadirkan rasa earthy khas teh hijau Jepang yang halus, seimbang antara pahit ringan dan manis lembut.",
                 price: "24000",
               ),
             ),
