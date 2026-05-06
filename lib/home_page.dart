@@ -7,41 +7,65 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        title: const Text("Kopie"),
       ),
       body: Column(
         children: [
-          // Header Image
-          Transform.translate(
-            offset: const Offset(0, -50),
-            child: Container(
-              height: 300,
-              decoration: BoxDecoration(
-                color: Colors.brown[200],
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/splash.png"),
-                  fit: BoxFit.cover,
-                ),
+          // 🔥 HEADER (lebih clean, tidak pakai translate lagi)
+          Container(
+            height: 260,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.brown[200],
+              image: const DecorationImage(
+                image: AssetImage("assets/images/splash.png"),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
             ),
           ),
-          const SizedBox(height: 20), // Jarak setelah header
-          
-          // Tombol ke MenuPage
+
+          const SizedBox(height: 30),
+
+          // 🔥 TEXT WELCOME
+          const Text(
+            "Selamat Datang di Kopie ☕",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Text(
+              "Nikmati berbagai pilihan kopi terbaik dengan cita rasa khas dan harga terjangkau.",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black54),
+            ),
+          ),
+
+          const SizedBox(height: 40),
+
+          // 🔥 BUTTON MENU
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 55,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/menu');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.brown,
+                  backgroundColor: const Color(0xFF1ABC9C),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
                 child: const Text(
@@ -49,6 +73,17 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
+            ),
+          ),
+
+          const Spacer(),
+
+          // 🔥 FOOTER
+          const Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: Text(
+              "© 2026 Kopie App",
+              style: TextStyle(color: Colors.black38),
             ),
           ),
         ],
