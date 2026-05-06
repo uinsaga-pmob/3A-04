@@ -75,21 +75,30 @@ class MenuPage extends StatelessWidget {
                 price: "22000",
               ),
             ),
+<<<<<<< HEAD
 
             // CAPPUCCINO (BARU)
+=======
+>>>>>>> 4f044cbe0f69bf45be2d81440f04cdd12c073bd2
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
+<<<<<<< HEAD
                       menuTitle: "Cappuccino",
                       price: "23000",
+=======
+                      menuTitle: " Affogato",
+                      price: "26000",
+>>>>>>> 4f044cbe0f69bf45be2d81440f04cdd12c073bd2
                     ),
                   ),
                 );
               },
               child: const MenuItemCard(
+<<<<<<< HEAD
                 image: "assets/images/cappuccino.jpg",
                 title: "Cappuccino",
                 description: "Espresso dengan susu dan foam tebal di atasnya.",
@@ -98,19 +107,33 @@ class MenuPage extends StatelessWidget {
             ),
 
             // MOCHA (BARU)
+=======
+                image: "assets/images/Affogato.jpeg",
+                title: "Affogato",
+                description: "Perpaduan espresso panas dan es krim vanila dingin. Rasa pahit kopi yang kuat berpadu dengan manis dan lembutnya es krim, menciptakan sensasi kontras yang kaya dan menyegarkan.",
+                price: "26000",
+              ),
+            ),
+>>>>>>> 4f044cbe0f69bf45be2d81440f04cdd12c073bd2
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
+<<<<<<< HEAD
                       menuTitle: "Mocha",
                       price: "25000",
+=======
+                      menuTitle: " Caramel",
+                      price: "27000",
+>>>>>>> 4f044cbe0f69bf45be2d81440f04cdd12c073bd2
                     ),
                   ),
                 );
               },
               child: const MenuItemCard(
+<<<<<<< HEAD
                 image: "assets/images/mocha.jpg",
                 title: "Mocha",
                 description: "Kopi dengan campuran coklat, manis dan creamy.",
@@ -119,23 +142,43 @@ class MenuPage extends StatelessWidget {
             ),
 
             // ESPRESSO (BARU)
+=======
+                image: "assets/images/Caramel.jpeg",
+                title: "Caramel",
+                description: "Kombinasi espresso, susu hangat, dan sirup caramel yang manis dan creamy. Memiliki aroma caramel yang menggoda dengan rasa kopi yang lembut, cocok untuk pencinta kopi manis.",
+                price: "27000",
+              ),
+            ),
+>>>>>>> 4f044cbe0f69bf45be2d81440f04cdd12c073bd2
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const TransactionPage(
+<<<<<<< HEAD
                       menuTitle: "Espresso",
                       price: "12000",
+=======
+                      menuTitle: " Matcha Latte",
+                      price: "24000",
+>>>>>>> 4f044cbe0f69bf45be2d81440f04cdd12c073bd2
                     ),
                   ),
                 );
               },
               child: const MenuItemCard(
+<<<<<<< HEAD
                 image: "assets/images/espresso.jpg",
                 title: "Espresso",
                 description: "Kopi pekat dengan rasa kuat dan aroma tajam.",
                 price: "12000",
+=======
+                image: "assets/images/Matcha Latte.jpeg",
+                title: "Matcha Latte",
+                description: "Minuman berbahan bubuk matcha premium yang dicampur dengan susu creamy. Menghadirkan rasa earthy khas teh hijau Jepang yang halus, seimbang antara pahit ringan dan manis lembut.",
+                price: "24000",
+>>>>>>> 4f044cbe0f69bf45be2d81440f04cdd12c073bd2
               ),
             ),
           ],
