@@ -51,7 +51,7 @@ class MenuPage extends StatelessWidget {
                 );
               },
               child: const MenuItemCard(
-                image: "assets/images/gula_aren.jpg",
+                image: "assets/images/gula aren.jpg",
                 title: "Gula Aren",
                 description: "Kopi dengan manis alami gula aren.",
                 price: "20000",
@@ -94,7 +94,7 @@ class MenuPage extends StatelessWidget {
                 );
               },
               child: const MenuItemCard(
-                image: "assets/images/cappuccino.jpg",
+                image: "assets/images/cappucino.jpeg",
                 title: "Cappuccino",
                 description:
                     "Espresso dengan susu dan foam tebal di atasnya.",
@@ -116,7 +116,7 @@ class MenuPage extends StatelessWidget {
                 );
               },
               child: const MenuItemCard(
-                image: "assets/images/mocha.jpg",
+                image: "assets/images/moca.jpg",
                 title: "Mocha",
                 description:
                     "Kopi dengan campuran coklat, manis dan creamy.",
@@ -204,7 +204,7 @@ class MenuPage extends StatelessWidget {
                 );
               },
               child: const MenuItemCard(
-                image: "assets/images/matcha_latte.jpeg",
+                image: "assets/images/Matcha Latte.jpeg",
                 title: "Matcha Latte",
                 description:
                     "Minuman matcha premium dengan susu creamy.",
@@ -214,6 +214,7 @@ class MenuPage extends StatelessWidget {
           ],
         ),
       ),
+     floatingActionButton: FloatingActionButton(onPressed: (){},child: Text('add'),),
     );
   }
 }
