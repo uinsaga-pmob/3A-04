@@ -214,7 +214,7 @@ class MenuPage extends StatelessWidget {
           ],
         ),
       ),
-     floatingActionButton: FloatingActionButton(onPressed: (){},child: Text('add'),),
+     floatingActionButton: FloatingActionButton(onPressed: (){},child: Text('+'),),
     );
   }
 }
