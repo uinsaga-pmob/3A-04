@@ -1,9 +1,91 @@
 import 'package:flutter/material.dart';
 import 'transaction_page.dart';
 import 'MenuItemCard.dart';
+import 'db_helper.dart';
+import 'kopi_model.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  // Controller untuk form input tambah menu baru
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController imageController = TextEditingController();
+
+  // Fungsi memunculkan pop-up formulir tambah menu
+  void _tampilkanFormTambah() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Tambah Menu Kopi"),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: "Nama Menu"),
+              ),
+              TextField(
+                controller: descController,
+                decoration: const InputDecoration(labelText: "Deskripsi"),
+              ),
+              TextField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: "Harga (Angka)"),
+              ),
+              TextField(
+                controller: imageController,
+                decoration: const InputDecoration(labelText: "Path Gambar (Contoh: assets/images/americano.jpg)"),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Batal"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
+                // Buat objek kopi baru
+                Kopi kopiBaru = Kopi(
+                  title: titleController.text,
+                  description: descController.text.isEmpty ? "-" : descController.text,
+                  price: priceController.text,
+                  image: imageController.text.isEmpty ? "assets/images/americano.jpg" : imageController.text,
+                );
+
+                // Simpan ke SQLite
+                await DbHelper.instance.insertKopi(kopiBaru);
+
+                // Bersihkan textfield
+                titleController.clear();
+                descController.clear();
+                priceController.clear();
+                imageController.clear();
+
+                // Tutup dialog pop-up
+                Navigator.pop(context);
+
+                // Segarkan halaman utama agar menu baru langsung muncul
+                setState(() {});
+              }
+            },
+            child: const Text("Simpan"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,210 +93,54 @@ class MenuPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Menu Kopi"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: FutureBuilder<List<Kopi>>(
+        future: DbHelper.instance.readAllKopi(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator(color: Colors.brown));
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("Menu kosong. Ketuk tombol + untuk menambah."));
+          }
 
-            // AMERICANO
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Americano",
-                      price: "15000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/americano.jpg",
-                title: "Americano",
-                description:
-                    "Minuman kopi yang dibuat dari espresso + air panas.",
-                price: "15000",
-              ),
-            ),
+          final daftarKopi = snapshot.data!;
 
-            // GULA AREN
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Gula Aren",
-                      price: "20000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/gula aren.jpg",
-                title: "Gula Aren",
-                description: "Kopi dengan manis alami gula aren.",
-                price: "20000",
-              ),
-            ),
+          return ListView.builder(
+            itemCount: daftarKopi.length,
+            itemBuilder: (context, index) {
+              final kopi = daftarKopi[index];
 
-            // LATTE
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Latte",
-                      price: "22000",
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => TransactionPage(
+                        menuTitle: kopi.title,
+                        price: kopi.price,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/latte.jpg",
-                title: "Kopi Latte",
-                description:
-                    "Espresso + susu, rasa creamy dan ringan.",
-                price: "22000",
-              ),
-            ),
-
-            // CAPPUCCINO
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Cappuccino",
-                      price: "23000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/cappucino.jpeg",
-                title: "Cappuccino",
-                description:
-                    "Espresso dengan susu dan foam tebal di atasnya.",
-                price: "23000",
-              ),
-            ),
-
-            // MOCHA
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Mocha",
-                      price: "25000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/moca.jpg",
-                title: "Mocha",
-                description:
-                    "Kopi dengan campuran coklat, manis dan creamy.",
-                price: "25000",
-              ),
-            ),
-
-            // ESPRESSO
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Espresso",
-                      price: "12000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/espresso.jpg",
-                title: "Espresso",
-                description:
-                    "Kopi pekat dengan rasa kuat dan aroma tajam.",
-                price: "12000",
-              ),
-            ),
-
-            // AFFOGATO
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Affogato",
-                      price: "26000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/affogato.jpeg",
-                title: "Affogato",
-                description:
-                    "Perpaduan espresso panas dan es krim vanila dingin.",
-                price: "26000",
-              ),
-            ),
-
-            // CARAMEL
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Caramel",
-                      price: "27000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/caramel.jpeg",
-                title: "Caramel",
-                description:
-                    "Kombinasi espresso, susu hangat, dan sirup caramel.",
-                price: "27000",
-              ),
-            ),
-
-            // MATCHA LATTE
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionPage(
-                      menuTitle: "Matcha Latte",
-                      price: "24000",
-                    ),
-                  ),
-                );
-              },
-              child: const MenuItemCard(
-                image: "assets/images/Matcha Latte.jpeg",
-                title: "Matcha Latte",
-                description:
-                    "Minuman matcha premium dengan susu creamy.",
-                price: "24000",
-              ),
-            ),
-          ],
-        ),
+                  );
+                },
+                child: MenuItemCard(
+                  image: kopi.image,
+                  title: kopi.title,
+                  description: kopi.description,
+                  price: kopi.price,
+                ),
+              );
+            },
+          );
+        },
       ),
-     floatingActionButton: FloatingActionButton(onPressed: (){},child: Text('+'),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _tampilkanFormTambah, // Memanggil fungsi pop-up form di atas
+        backgroundColor: Colors.brown,
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     );
   }
 }
