@@ -3,6 +3,7 @@ import 'transaction_page.dart';
 import 'MenuItemCard.dart';
 import 'db_helper.dart';
 import 'kopi_model.dart';
+import 'history_page.dart'; // Mengamankan halaman riwayat milik teman kelompok
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -17,7 +18,7 @@ class _MenuPageState extends State<MenuPage> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
-  // 1. FORM FORMULIR EDIT MENU (Otomatis Terisi Data Lama)
+  // 1. FORM FORMULIR EDIT MENU
   void _tampilkanFormEdit(Kopi kopiLama) {
     titleController.text = kopiLama.title;
     descController.text = kopiLama.description;
@@ -64,7 +65,7 @@ class _MenuPageState extends State<MenuPage> {
             onPressed: () async {
               if (titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
                 Kopi kopiDiperbarui = Kopi(
-                  id: kopiLama.id, // ID lama wajib disertakan agar database tahu baris mana yang diubah
+                  id: kopiLama.id,
                   title: titleController.text,
                   description: descController.text.isEmpty ? "-" : descController.text,
                   price: priceController.text,
@@ -75,7 +76,7 @@ class _MenuPageState extends State<MenuPage> {
                 _bersihkanController();
 
                 Navigator.pop(context);
-                setState(() {}); // Segarkan tampilan layar
+                setState(() {});
               }
             },
             child: const Text("Perbarui"),
@@ -85,6 +86,7 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  // 2. FORM FORMULIR TAMBAH MENU
   void _tampilkanFormTambah() {
     showDialog(
       context: context,
@@ -152,79 +154,24 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    final List<Map<String, String>> menuList = [
-      {
-        "title": "Americano",
-        "description":
-            "Minuman kopi yang dibuat dari espresso + air panas.",
-        "price": "15000",
-        "image": "assets/images/americano.jpg",
-      },
-      {
-        "title": "Gula Aren",
-        "description":
-            "Kopi dengan manis alami gula aren.",
-        "price": "20000",
-        "image": "assets/images/gula_aren.jpeg",
-      },
-      {
-        "title": "Kopi Latte",
-        "description":
-            "Espresso + susu, rasa creamy dan ringan.",
-        "price": "22000",
-        "image": "assets/images/latte.jpg",
-      },
-      {
-        "title": "Cappuccino",
-        "description":
-            "Espresso dengan susu dan foam tebal di atasnya.",
-        "price": "23000",
-        "image": "assets/images/cappucino.jpeg",
-      },
-      {
-        "title": "Mocha",
-        "description":
-            "Kopi dengan campuran coklat, manis dan creamy.",
-        "price": "25000",
-        "image": "assets/images/moca.jpg",
-      },
-      {
-        "title": "Espresso",
-        "description":
-            "Kopi pekat dengan rasa kuat dan aroma tajam.",
-        "price": "12000",
-        "image": "assets/images/espresso.jpg",
-      },
-      {
-        "title": "Affogato",
-        "description":
-            "Perpaduan espresso panas dan es krim vanila dingin.",
-        "price": "26000",
-        "image": "assets/images/affogato.jpeg",
-      },
-      {
-        "title": "Caramel",
-        "description":
-            "Kombinasi espresso, susu hangat, dan sirup caramel.",
-        "price": "27000",
-        "image": "assets/images/caramel.jpeg",
-      },
-      {
-        "title": "Matcha Latte",
-        "description":
-            "Minuman matcha premium dengan susu creamy.",
-        "price": "24000",
-        "image": "assets/images/matcha_latte.jpeg",
-      },
-    ];
-
     return Scaffold(
       appBar: AppBar(
-<<<<<<< HEAD
         title: const Text("Menu Kopi"),
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
+        actions: [
+          // Tombol Riwayat milik temanmu dipindah ke atas AppBar agar rapi dan tidak bentrok
+          IconButton(
+            icon: const Icon(Icons.history),
+            tooltip: "Riwayat Transaksi",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HistoryPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<Kopi>>(
         future: DbHelper.instance.readAllKopi(),
@@ -248,33 +195,24 @@ class _MenuPageState extends State<MenuPage> {
 
               return Dismissible(
                 key: Key(kopi.id.toString()),
-                // MENGAKTIFKAN DUA ARAH GESER: Kiri (Hapus) dan Kanan (Edit)
-                direction: DismissDirection.horizontal, 
-                
-                // Tampilan latar saat digeser ke Kanan (EDIT)
+                direction: DismissDirection.horizontal,
                 background: Container(
                   color: Colors.blue,
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 20.0),
                   child: const Icon(Icons.edit, color: Colors.white, size: 30),
                 ),
-                
-                // Tampilan latar saat digeser ke Kiri (HAPUS)
                 secondaryBackground: Container(
                   color: Colors.red,
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 20.0),
                   child: const Icon(Icons.delete, color: Colors.white, size: 30),
                 ),
-                
-                // Logika pemisah aksi saat pengguna menggeser kartu menu
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.startToEnd) {
-                    // Jika digeser ke KANAN, jalankan form edit dan gagalkan efek hilangnya widget
                     _tampilkanFormEdit(kopi);
-                    return false; 
+                    return false;
                   } else {
-                    // Jika digeser ke KIRI, munculkan pop-up konfirmasi hapus seperti kemarin
                     return await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -322,83 +260,19 @@ class _MenuPageState extends State<MenuPage> {
                     title: kopi.title,
                     description: kopi.description,
                     price: kopi.price,
-=======
-        title: const Text("☕ Menu Kopi"),
-        centerTitle: true,
-      ),
-
-      body: ListView.builder(
-        itemCount: menuList.length,
-
-        itemBuilder: (context, index) {
-
-          final menu = menuList[index];
-
-          return GestureDetector(
-            onTap: () {
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => TransactionPage(
-                    menuTitle: menu["title"]!,
-                    price: menu["price"]!,
-                    image: menu["image"]!,
->>>>>>> d9d08a43678e1296132bd169a70f4bfadf0c58d8
                   ),
                 ),
               );
             },
-<<<<<<< HEAD
           );
         },
       ),
+      // FloatingActionButton bawah murni digunakan untuk Tambah Menu (+)
       floatingActionButton: FloatingActionButton(
         onPressed: _tampilkanFormTambah,
         backgroundColor: Colors.brown,
         child: const Icon(Icons.add, color: Colors.white),
       ),
-=======
-
-            child: MenuItemCard(
-              image: menu["image"]!,
-              title: menu["title"]!,
-              description: menu["description"]!,
-              price: menu["price"]!,
-            ),
-          );
-        },
-      ),
-
-floatingActionButton:
-    FloatingActionButton.extended(
-
-  backgroundColor: Colors.brown,
-
-  icon: const Icon(
-    Icons.history,
-    color: Colors.white,
-  ),
-
-  label: const Text(
-    "Riwayat",
-    style: TextStyle(
-      color: Colors.white,
-    ),
-  ),
-
-  onPressed: () {
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) =>
-            const HistoryPage(),
-      ),
-    );
-  },
-),
->>>>>>> d9d08a43678e1296132bd169a70f4bfadf0c58d8
     );
   }
 }
