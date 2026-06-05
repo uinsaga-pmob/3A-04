@@ -7,6 +7,8 @@ import 'package:template/MenuItemCard.dart';
 import 'package:template/transaction_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(const MyApp());
 }
 

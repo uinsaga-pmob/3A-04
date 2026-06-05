@@ -23,6 +23,8 @@ class MenuItemCard extends StatelessWidget {
       ),
       elevation: 4,
       child: Row(
+        // Menyeimbangkan tinggi Row agar mengikuti elemen tertinggi
+        crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.only(
@@ -34,6 +36,19 @@ class MenuItemCard extends StatelessWidget {
               width: 120,
               height: 120,
               fit: BoxFit.cover,
+              // Trik Jitu: Jika gambar aset tidak ditemukan, ganti dengan kontainer abu-abu + ikon kopi
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 120,
+                  height: 120,
+                  color: Colors.grey[300],
+                  child: const Icon(
+                    Icons.coffee,
+                    size: 50,
+                    color: Colors.brown,
+                  ),
+                );
+              },
             ),
           ),
 
@@ -43,17 +58,24 @@ class MenuItemCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title,
-                      style:
-                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(
+                    title,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis, // Potong teks pakai titik-titik jika terlalu panjang
+                  ),
                   const SizedBox(height: 6),
-                  Text(description,
-                      style: const TextStyle(color: Colors.black54)),
+                  Text(
+                    description,
+                    style: const TextStyle(color: Colors.black54),
+                    maxLines: 2, // Batasi deskripsi maksimal 2 baris agar tidak meluber
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   const SizedBox(height: 10),
                   Text(
                     "Rp $price",
                     style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                        fontSize: 16, fontWeight: FontWeight.bold, color: Colors.brown),
                   ),
                 ],
               ),
@@ -63,4 +85,4 @@ class MenuItemCard extends StatelessWidget {
       ),
     );
   }
-} 
+}
