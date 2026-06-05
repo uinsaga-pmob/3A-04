@@ -3,7 +3,7 @@ import 'transaction_page.dart';
 import 'MenuItemCard.dart';
 import 'db_helper.dart';
 import 'kopi_model.dart';
-import 'history_page.dart'; // Mengamankan halaman riwayat milik teman kelompok
+import 'history_page.dart'; 
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -18,7 +18,6 @@ class _MenuPageState extends State<MenuPage> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
-  // 1. FORM FORMULIR EDIT MENU
   void _tampilkanFormEdit(Kopi kopiLama) {
     titleController.text = kopiLama.title;
     descController.text = kopiLama.description;
@@ -86,7 +85,6 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  // 2. FORM FORMULIR TAMBAH MENU
   void _tampilkanFormTambah() {
     showDialog(
       context: context,
@@ -160,7 +158,6 @@ class _MenuPageState extends State<MenuPage> {
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
         actions: [
-          // Tombol Riwayat milik temanmu dipindah ke atas AppBar agar rapi dan tidak bentrok
           IconButton(
             icon: const Icon(Icons.history),
             tooltip: "Riwayat Transaksi",
@@ -251,6 +248,7 @@ class _MenuPageState extends State<MenuPage> {
                         builder: (_) => TransactionPage(
                           menuTitle: kopi.title,
                           price: kopi.price,
+                          image: kopi.image,
                         ),
                       ),
                     );
@@ -267,7 +265,6 @@ class _MenuPageState extends State<MenuPage> {
           );
         },
       ),
-      // FloatingActionButton bawah murni digunakan untuk Tambah Menu (+)
       floatingActionButton: FloatingActionButton(
         onPressed: _tampilkanFormTambah,
         backgroundColor: Colors.brown,
