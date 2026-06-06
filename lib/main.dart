@@ -5,6 +5,7 @@ import 'package:template/main.dart';
 import 'package:template/menu_page.dart';
 import 'package:template/MenuItemCard.dart';
 import 'package:template/transaction_page.dart';
+import 'package:template/history_page.dart';
 
 void main() {
   runApp(const MyApp());
