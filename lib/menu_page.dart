@@ -3,7 +3,10 @@ import 'transaction_page.dart';
 import 'MenuItemCard.dart';
 import 'db_helper.dart';
 import 'kopi_model.dart';
-import 'history_page.dart'; 
+import 'history_page.dart';
+import 'cart_page.dart';
+import 'cart_item.dart';
+import 'cart_service.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -62,13 +65,17 @@ class _MenuPageState extends State<MenuPage> {
           ),
           ElevatedButton(
             onPressed: () async {
-              if (titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
+              if (titleController.text.isNotEmpty &&
+                  priceController.text.isNotEmpty) {
                 Kopi kopiDiperbarui = Kopi(
                   id: kopiLama.id,
                   title: titleController.text,
-                  description: descController.text.isEmpty ? "-" : descController.text,
+                  description:
+                      descController.text.isEmpty ? "-" : descController.text,
                   price: priceController.text,
-                  image: imageController.text.isEmpty ? "assets/images/americano.jpg" : imageController.text,
+                  image: imageController.text.isEmpty
+                      ? "assets/images/americano.jpg"
+                      : imageController.text,
                 );
 
                 await DbHelper.instance.updateKopi(kopiDiperbarui);
@@ -121,12 +128,16 @@ class _MenuPageState extends State<MenuPage> {
           ),
           ElevatedButton(
             onPressed: () async {
-              if (titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
+              if (titleController.text.isNotEmpty &&
+                  priceController.text.isNotEmpty) {
                 Kopi kopiBaru = Kopi(
                   title: titleController.text,
-                  description: descController.text.isEmpty ? "-" : descController.text,
+                  description:
+                      descController.text.isEmpty ? "-" : descController.text,
                   price: priceController.text,
-                  image: imageController.text.isEmpty ? "assets/images/americano.jpg" : imageController.text,
+                  image: imageController.text.isEmpty
+                      ? "assets/images/americano.jpg"
+                      : imageController.text,
                 );
 
                 await DbHelper.instance.insertKopi(kopiBaru);
@@ -158,13 +169,28 @@ class _MenuPageState extends State<MenuPage> {
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
         actions: [
+          //TOMBOLKERANJANG
           IconButton(
-            icon: const Icon(Icons.history),
-            tooltip: "Riwayat Transaksi",
+            icon: const Icon(Icons.shopping_cart),
+            tooltip: "keranjang",
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const HistoryPage()),
+              );
+            },
+          ),
+
+          //TOMBOL RIWAYAT
+          IconButton(
+            icon: const Icon(Icons.history),
+            tooltip: "riwayat transaksi",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const HistoryPage(),
+                ),
               );
             },
           ),
@@ -174,13 +200,15 @@ class _MenuPageState extends State<MenuPage> {
         future: DbHelper.instance.readAllKopi(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Colors.brown));
+            return const Center(
+                child: CircularProgressIndicator(color: Colors.brown));
           }
           if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("Menu kosong. Ketuk tombol + untuk menambah."));
+            return const Center(
+                child: Text("Menu kosong. Ketuk tombol + untuk menambah."));
           }
 
           final daftarKopi = snapshot.data!;
@@ -203,7 +231,8 @@ class _MenuPageState extends State<MenuPage> {
                   color: Colors.red,
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 20.0),
-                  child: const Icon(Icons.delete, color: Colors.white, size: 30),
+                  child:
+                      const Icon(Icons.delete, color: Colors.white, size: 30),
                 ),
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.startToEnd) {
@@ -215,7 +244,8 @@ class _MenuPageState extends State<MenuPage> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text("Konfirmasi Hapus"),
-                          content: Text("Apakah kamu yakin ingin menghapus menu '${kopi.title}'?"),
+                          content: Text(
+                              "Apakah kamu yakin ingin menghapus menu '${kopi.title}'?"),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
@@ -223,7 +253,8 @@ class _MenuPageState extends State<MenuPage> {
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text("Hapus", style: TextStyle(color: Colors.red)),
+                              child: const Text("Hapus",
+                                  style: TextStyle(color: Colors.red)),
                             ),
                           ],
                         );
@@ -232,7 +263,8 @@ class _MenuPageState extends State<MenuPage> {
                   }
                 },
                 onDismissed: (direction) async {
-                  if (direction == DismissDirection.endToStart && kopi.id != null) {
+                  if (direction == DismissDirection.endToStart &&
+                      kopi.id != null) {
                     await DbHelper.instance.deleteKopi(kopi.id!);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("${kopi.title} berhasil dihapus")),
@@ -242,13 +274,18 @@ class _MenuPageState extends State<MenuPage> {
                 },
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => TransactionPage(
-                          menuTitle: kopi.title,
-                          price: kopi.price,
-                          image: kopi.image,
+                    CartService.addItem(
+                      CartItem(
+                        title: kopi.title,
+                        image: kopi.image,
+                        price: int.parse(kopi.price),
+                      ),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "${kopi.title} ditambahkan ke keranjang",
                         ),
                       ),
                     );

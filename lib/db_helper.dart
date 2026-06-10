@@ -33,6 +33,19 @@ class DbHelper {
     )
     ''');
 
+    //TABEL TRANSAKSI
+    await db.execute('''
+    CREATE TABLE transaksi (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nama_menu TEXT,
+      harga INTEGER,
+      jumlah INTEGER,
+      metode TEXT,
+      total INTEGER,
+      tanggal TEXT
+    )
+    ''');
+
     // Suntik data menu bawaan agar tidak kosong saat pertama dibuka
     final List<Map<String, String>> menuBawaan = [
       {
@@ -108,6 +121,7 @@ class DbHelper {
     final db = await instance.database;
     return await db.insert('menu_kopi', kopi.toMap());
   }
+
   // Fungsi baru untuk menghapus menu berdasarkan ID
   Future<int> deleteKopi(int id) async {
     final db = await instance.database;
@@ -117,6 +131,7 @@ class DbHelper {
       whereArgs: [id],
     );
   }
+
   // Fungsi baru untuk memperbarui data menu berdasarkan ID
   Future<int> updateKopi(Kopi kopi) async {
     final db = await instance.database;
@@ -125,6 +140,50 @@ class DbHelper {
       kopi.toMap(), // Mengonversi objek kopi kembali menjadi Map/Struktur Tabel
       where: 'id = ?',
       whereArgs: [kopi.id],
+    );
+  }
+
+  //Fungsi simpan transaksi
+  Future<int> insertTransaction(
+    Map<String, dynamic> data,
+  ) async {
+    final db = await instance.database;
+
+    return await db.insert(
+      'transaksi',
+      data,
+    );
+  }
+
+  //Fungsiambil riwayat
+  Future<List<Map<String, dynamic>>> getTransactions() async {
+    final db = await instance.database;
+
+    return await db.query(
+      'transaksi',
+      orderBy: 'id DESC',
+    );
+  }
+
+//Fungsi hapus 1 riwayat
+  Future<int> deleteTransaction(
+    int id,
+  ) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      'transaksi',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+//Fungsihapus semua riwayat
+  Future<int> clearHistory() async {
+    final db = await instance.database;
+
+    return await db.delete(
+      'transaksi',
     );
   }
 }

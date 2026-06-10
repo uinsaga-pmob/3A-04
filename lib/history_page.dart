@@ -5,13 +5,10 @@ class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
 
   @override
-  State<HistoryPage> createState() =>
-      _HistoryPageState();
+  State<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _HistoryPageState
-    extends State<HistoryPage> {
-
+class _HistoryPageState extends State<HistoryPage> {
   List<Map<String, dynamic>> history = [];
 
   @override
@@ -21,9 +18,7 @@ class _HistoryPageState
   }
 
   Future loadHistory() async {
-
-    final data =
-        await DBHelper.getTransactions();
+    final data = await DBHelper.getTransactions();
 
     setState(() {
       history = data;
@@ -31,14 +26,12 @@ class _HistoryPageState
   }
 
   Future deleteHistory(int id) async {
-
     await DBHelper.deleteTransaction(id);
 
     loadHistory();
   }
 
   Future clearAll() async {
-
     await DBHelper.clearHistory();
 
     loadHistory();
@@ -46,30 +39,23 @@ class _HistoryPageState
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       appBar: AppBar(
         title: const Text(
           "Riwayat Transaksi",
         ),
-
         actions: [
-
           IconButton(
             icon: const Icon(
               Icons.delete_forever,
             ),
             onPressed: () async {
-
               await clearAll();
             },
           ),
         ],
       ),
-
       body: history.isEmpty
-
           ? const Center(
               child: Text(
                 "Belum ada transaksi ☕",
@@ -78,78 +64,52 @@ class _HistoryPageState
                 ),
               ),
             )
-
           : ListView.builder(
               itemCount: history.length,
-
               itemBuilder: (context, index) {
-
                 final item = history[index];
 
                 return Card(
-                  margin:
-                      const EdgeInsets.all(10),
-
+                  margin: const EdgeInsets.all(10),
                   child: ListTile(
-
                     leading: const CircleAvatar(
                       child: Icon(
                         Icons.coffee,
                       ),
                     ),
-
                     title: Text(
                       item["nama_menu"],
                     ),
-
                     subtitle: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment
-                              .start,
-
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         Text(
                           "Qty : ${item["jumlah"]}",
                         ),
-
                         Text(
                           "Metode : ${item["metode"]}",
                         ),
-
                         Text(
                           item["tanggal"],
                         ),
                       ],
                     ),
-
                     trailing: Column(
-                      mainAxisAlignment:
-                          MainAxisAlignment
-                              .center,
-
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
                         Text(
                           "Rp ${item["total"]}",
-                          style:
-                              const TextStyle(
-                            fontWeight:
-                                FontWeight
-                                    .bold,
-                            color:
-                                Colors.brown,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.brown,
                           ),
                         ),
-
                         IconButton(
                           icon: const Icon(
                             Icons.delete,
                             color: Colors.red,
                           ),
-
                           onPressed: () {
-
                             deleteHistory(
                               item["id"],
                             );
