@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // 🔥 HEADER (lebih clean, tidak pakai translate lagi)
+          // HEADER (lebih clean, tidak pakai translate lagi)
           Container(
             height: 260,
             width: double.infinity,
@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
 
           const SizedBox(height: 30),
 
-          // 🔥 TEXT WELCOME
+          // TEXT WELCOME
           const Text(
             "Selamat Datang di Kopie ☕",
             style: TextStyle(
@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
 
           const SizedBox(height: 40),
 
-          // 🔥 BUTTON MENU
+          // BUTTON MENU
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
                   Navigator.pushNamed(context, '/menu');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1ABC9C),
+                  backgroundColor: Colors.brown,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
 
           const Spacer(),
 
-          // 🔥 FOOTER
+          // FOOTER
           const Padding(
             padding: EdgeInsets.only(bottom: 20),
             child: Text(

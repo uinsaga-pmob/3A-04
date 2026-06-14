@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // 🔥 animasi fade in
+    // animasi fade in
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // ⏳ pindah halaman setelah 5 detik
+    // pindah halaman setelah 5 detik
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // 🔥 background gradient biar lebih modern
+        // background gradient biar keren aja
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -85,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen>
 
                 const SizedBox(height: 10),
 
-                // SUBTITLE (opsional biar keren 😎)
+                // SUBTITLE (opsional biar kerennnnn donggggg)
                 const Text(
                   "Fresh Coffee Everyday",
                   style: TextStyle(

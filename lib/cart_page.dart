@@ -46,6 +46,22 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
+  void tambahQty(int index) {
+    setState(() {
+      CartService.items[index].quantity++;
+    });
+  }
+
+  void kurangQty(int index) {
+    setState(() {
+      if (CartService.items[index].quantity > 1) {
+        CartService.items[index].quantity--;
+      } else {
+        CartService.items.removeAt(index);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,19 +82,44 @@ class _CartPageState extends State<CartPage> {
                     itemBuilder: (context, index) {
                       final item = CartService.items[index];
 
-                      return ListTile(
-                        leading: Image.asset(
-                          item.image,
-                          width: 50,
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
                         ),
-                        title: Text(
-                          item.title,
-                        ),
-                        subtitle: Text(
-                          "Qty : ${item.quantity}",
-                        ),
-                        trailing: Text(
-                          "Rp ${item.subtotal}",
+                        child: ListTile(
+                          leading: Image.asset(
+                            item.image,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                          title: Text(item.title),
+                          subtitle: Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove_circle),
+                                onPressed: () => kurangQty(index),
+                              ),
+                              Text(
+                                "${item.quantity}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.add_circle),
+                                onPressed: () => tambahQty(index),
+                              ),
+                            ],
+                          ),
+                          trailing: Text(
+                            "Rp ${item.subtotal}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       );
                     },
@@ -95,9 +136,7 @@ class _CartPageState extends State<CartPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(

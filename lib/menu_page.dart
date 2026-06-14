@@ -176,7 +176,7 @@ class _MenuPageState extends State<MenuPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const HistoryPage()),
+                MaterialPageRoute(builder: (_) => const CartPage()),
               );
             },
           ),
