@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'transaction_page.dart';
 import 'MenuItemCard.dart';
 import 'db_helper.dart';
 import 'kopi_model.dart';
@@ -169,7 +168,6 @@ class _MenuPageState extends State<MenuPage> {
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
         actions: [
-          //TOMBOLKERANJANG
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             tooltip: "keranjang",
@@ -177,11 +175,11 @@ class _MenuPageState extends State<MenuPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const CartPage()),
-              );
+              ).then((_) {
+                setState(() {});
+              });
             },
           ),
-
-          //TOMBOL RIWAYAT
           IconButton(
             icon: const Icon(Icons.history),
             tooltip: "riwayat transaksi",
@@ -231,8 +229,7 @@ class _MenuPageState extends State<MenuPage> {
                   color: Colors.red,
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 20.0),
-                  child:
-                      const Icon(Icons.delete, color: Colors.white, size: 30),
+                  child: const Icon(Icons.delete, color: Colors.white, size: 30),
                 ),
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.startToEnd) {
@@ -274,19 +271,28 @@ class _MenuPageState extends State<MenuPage> {
                 },
                 child: GestureDetector(
                   onTap: () {
+                    // Bersihkan string harga dari "Rp" atau titik pembatas ribuan sebelum diubah ke int
+                    String hargaBersih = kopi.price
+                        .replaceAll('Rp', '')
+                        .replaceAll('.', '')
+                        .replaceAll(' ', '');
+
+                    int hargaAngka = int.tryParse(hargaBersih) ?? 0;
+
                     CartService.addItem(
                       CartItem(
                         title: kopi.title,
                         image: kopi.image,
-                        price: int.parse(kopi.price),
+                        price: hargaAngka,
                       ),
                     );
 
+                    setState(() {});
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          "${kopi.title} ditambahkan ke keranjang",
-                        ),
+                        content: Text("${kopi.title} ditambahkan ke keranjang"),
+                        duration: const Duration(milliseconds: 800),
                       ),
                     );
                   },
@@ -295,6 +301,32 @@ class _MenuPageState extends State<MenuPage> {
                     title: kopi.title,
                     description: kopi.description,
                     price: kopi.price,
+                    onTambah : () {
+                      String hargaBersih = kopi.price
+                      .replaceAll('Rp','')
+                      .replaceAll('.','')
+                      .replaceAll('','');
+
+                      int hargaAngka = int.tryParse(hargaBersih) ?? 0;
+
+
+                      CartService.addItem(
+                        CartItem(
+                          title: kopi.title,
+                          image: kopi.image,
+                          price: hargaAngka,
+                          ),
+                      );
+
+                      setState(() {});
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("${kopi.title} ditambahkan ke keranjang"),
+                          duration: const Duration(milliseconds: 800),
+                          ),
+                      );
+                    },
                   ),
                 ),
               );
