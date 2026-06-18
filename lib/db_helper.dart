@@ -186,4 +186,12 @@ class DbHelper {
       'transaksi',
     );
   }
+
+  Future<void> tambahKeKeranjang(Map<String, dynamic> map) async {}
+
+  Future dapatkanKeranjang() async {}
+
+  Future<void> kurangiJumlahKeranjang(int idKopi) async {}
+
+  Future<void> hapusDariKeranjang(int idKopi) async {}
 }

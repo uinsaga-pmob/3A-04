@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:template/splash_screen.dart';
 import 'package:template/home_page.dart';
-import 'package:template/main.dart';
 import 'package:template/menu_page.dart';
-import 'package:template/MenuItemCard.dart';
-import 'package:template/transaction_page.dart';
-import 'package:template/history_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
