@@ -171,14 +171,49 @@ class _MenuPageState extends State<MenuPage> {
         actions: [
           //TOMBOLKERANJANG
           IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            tooltip: "keranjang",
-            onPressed: () {
-              Navigator.push(
+            tooltip: "Keranjang",
+            onPressed: () async {
+              await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const CartPage()),
+                MaterialPageRoute(
+                  builder: (_) => const CartPage(),
+                ),
               );
+
+              setState(() {});
             },
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                const Icon(Icons.shopping_cart),
+
+                if (CartService.itemCount > 0)
+                  Positioned(
+                    right: -6,
+                    top: -6,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 18,
+                        minHeight: 18,
+                      ),
+                      child: Text(
+                        "${CartService.itemCount}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
 
           //TOMBOL RIWAYAT
@@ -282,8 +317,11 @@ class _MenuPageState extends State<MenuPage> {
                       ),
                     );
 
+                    setState(() {});
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+                        duration: const Duration(seconds: 1),
                         content: Text(
                           "${kopi.title} ditambahkan ke keranjang",
                         ),

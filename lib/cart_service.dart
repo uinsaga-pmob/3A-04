@@ -26,6 +26,14 @@ class CartService {
     );
   }
 
+  // JUMLAH SELURUH PRODUK DI KERANJANG
+  static int get itemCount {
+    return items.fold(
+      0,
+      (sum, item) => sum + item.quantity,
+    );
+  }
+
   static void clearCart() {
     items.clear();
   }

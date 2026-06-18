@@ -1,44 +1,34 @@
 import 'package:flutter/material.dart';
+import 'cart_service.dart';
 import 'database/db_helper.dart';
 
-class TransactionPage extends StatefulWidget {
-  final String menuTitle;
-  final String price;
-  final String image;
-
-  const TransactionPage({
-    super.key,
-    required this.menuTitle,
-    required this.price,
-    required this.image,
-  });
+class CartCheckoutPage extends StatefulWidget {
+  const CartCheckoutPage({super.key});
 
   @override
-  State<TransactionPage> createState() => _TransactionPageState();
+  State<CartCheckoutPage> createState() => _CartCheckoutPageState();
 }
 
-class _TransactionPageState extends State<TransactionPage> {
-  int quantity = 1;
-
+class _CartCheckoutPageState extends State<CartCheckoutPage> {
   String paymentMethod = "QRIS";
 
-  int get itemPrice => int.parse(widget.price);
-
-  int get subtotal => itemPrice * quantity;
+  int get subtotal => CartService.total;
 
   int get serviceFee => 2000;
 
   int get total => subtotal + serviceFee;
 
   Future<void> saveTransaction() async {
-    await DBHelper.insertTransaction({
-      "nama_menu": widget.menuTitle,
-      "harga": itemPrice,
-      "jumlah": quantity,
-      "metode": paymentMethod,
-      "total": total,
-      "tanggal": DateTime.now().toString(),
-    });
+    for (var item in CartService.items) {
+      await DBHelper.insertTransaction({
+        "nama_menu": item.title,
+        "harga": item.price,
+        "jumlah": item.quantity,
+        "metode": paymentMethod,
+        "total": item.subtotal,
+        "tanggal": DateTime.now().toString(),
+      });
+    }
   }
 
   @override
@@ -46,29 +36,13 @@ class _TransactionPageState extends State<TransactionPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F4EE),
       appBar: AppBar(
-        title: const Text("Checkout"),
+        title: const Text("Checkout Keranjang"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // FOTO MENU
-            Container(
-              height: 220,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: AssetImage(widget.image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // INFO PRODUK
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -76,95 +50,32 @@ class _TransactionPageState extends State<TransactionPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.menuTitle,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                  children: CartService.items.map((item) {
+                    return ListTile(
+                      leading: Image.asset(
+                        item.image,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      "Nikmati kopi pilihan dengan kualitas terbaik.",
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Rp ${widget.price}",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.brown,
-                        fontWeight: FontWeight.bold,
+                      title: Text(item.title),
+                      subtitle: Text(
+                        "${item.quantity} x Rp ${item.price}",
                       ),
-                    ),
-                  ],
+                      trailing: Text(
+                        "Rp ${item.subtotal}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ),
 
             const SizedBox(height: 20),
 
-            // QUANTITY
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Jumlah",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.remove_circle,
-                            color: Colors.brown,
-                          ),
-                          onPressed: () {
-                            if (quantity > 1) {
-                              setState(() {
-                                quantity--;
-                              });
-                            }
-                          },
-                        ),
-                        Text(
-                          quantity.toString(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.add_circle,
-                            color: Colors.brown,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              quantity++;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // METODE PEMBAYARAN
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -199,7 +110,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           paymentMethod = value!;
                         });
                       },
-                    ),
+                    ), 
                   ],
                 ),
               ),
@@ -207,7 +118,6 @@ class _TransactionPageState extends State<TransactionPage> {
 
             const SizedBox(height: 20),
 
-            // DETAIL PEMBAYARAN
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -246,7 +156,11 @@ class _TransactionPageState extends State<TransactionPage> {
                   backgroundColor: Colors.brown,
                 ),
                 onPressed: () async {
+                  final int finalTotal = total;
+
                   await saveTransaction();
+
+                  CartService.clearCart();
 
                   if (!context.mounted) return;
 
@@ -257,13 +171,12 @@ class _TransactionPageState extends State<TransactionPage> {
                         "Pembayaran Berhasil",
                       ),
                       content: Text(
-                        "Total pembayaran Rp $total",
+                        "Total pembayaran Rp $finalTotal",
                       ),
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-
                             Navigator.pop(context);
                           },
                           child: const Text("OK"),

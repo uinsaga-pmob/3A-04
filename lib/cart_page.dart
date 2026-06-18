@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'cart_service.dart';
 import 'database/db_helper.dart';
+import 'cart_checkout_page.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -10,41 +11,6 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  Future checkout() async {
-    for (var item in CartService.items) {
-      await DBHelper.insertTransaction({
-        "nama_menu": item.title,
-        "harga": item.price,
-        "jumlah": item.quantity,
-        "metode": "QRIS",
-        "total": item.subtotal,
-        "tanggal": DateTime.now().toString(),
-      });
-    }
-
-    CartService.clearCart();
-
-    if (!mounted) return;
-
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Checkout Berhasil"),
-        content: const Text(
-          "Pesanan berhasil disimpan",
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {});
-            },
-            child: const Text("OK"),
-          ),
-        ],
-      ),
-    );
-  }
 
   void tambahQty(int index) {
     setState(() {
@@ -60,6 +26,85 @@ class _CartPageState extends State<CartPage> {
         CartService.items.removeAt(index);
       }
     });
+  }
+
+  Future<void> hapusItem(int index) async {
+    final item = CartService.items[index];
+
+    bool? konfirmasi = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Hapus Produk"),
+        content: Text(
+          "Yakin ingin menghapus ${item.title} dari keranjang?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Batal"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              "Hapus",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (konfirmasi == true) {
+      setState(() {
+        CartService.items.removeAt(index);
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("${item.title} dihapus dari keranjang"),
+          duration: const Duration(seconds: 1),
+        ),
+      );
+    }
+  }
+
+  void kosongkanKeranjang() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Kosongkan Keranjang"),
+        content: const Text(
+          "Apakah Anda yakin ingin menghapus semua item di keranjang?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Batal"),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                CartService.clearCart();
+              });
+
+              Navigator.pop(context);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Keranjang berhasil dikosongkan"),
+                ),
+              );
+            },
+            child: const Text(
+              "Hapus Semua",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -88,6 +133,10 @@ class _CartPageState extends State<CartPage> {
                           vertical: 5,
                         ),
                         child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
                           leading: Image.asset(
                             item.image,
                             width: 50,
@@ -114,10 +163,30 @@ class _CartPageState extends State<CartPage> {
                               ),
                             ],
                           ),
-                          trailing: Text(
-                            "Rp ${item.subtotal}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                          trailing: SizedBox(
+                            width: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "Rp ${item.subtotal}",
+                                    textAlign: TextAlign.end,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  tooltip: "Hapus Produk",
+                                  onPressed: () => hapusItem(index),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -139,13 +208,33 @@ class _CartPageState extends State<CartPage> {
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: checkout,
-                          child: const Text(
-                            "Checkout",
+                        child: OutlinedButton.icon(
+                          icon: const Icon(Icons.delete_sweep),
+                          label: const Text(
+                            "Kosongkan Keranjang",
                           ),
+                          onPressed: kosongkanKeranjang,
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+  width: double.infinity,
+  child: ElevatedButton(
+      onPressed: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const CartCheckoutPage(),
+          ),
+        );
+
+        setState(() {});
+      },
+      child: const Text(
+        "Checkout",
+      ),
+    ),
+  ),
                     ],
                   ),
                 ),
