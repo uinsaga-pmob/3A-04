@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'transaction_page.dart';
 import 'MenuItemCard.dart';
 import 'db_helper.dart';
 import 'kopi_model.dart';
@@ -169,18 +168,24 @@ class _MenuPageState extends State<MenuPage> {
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
         actions: [
-          //TOMBOLKERANJANG
           IconButton(
             tooltip: "Keranjang",
             onPressed: () async {
               await Navigator.push(
                 context,
+<<<<<<< HEAD
                 MaterialPageRoute(
                   builder: (_) => const CartPage(),
                 ),
               );
 
               setState(() {});
+=======
+                MaterialPageRoute(builder: (_) => const CartPage()),
+              ).then((_) {
+                setState(() {});
+              });
+>>>>>>> 29d7d80099b1d3d5487de1e319093c4cfb57cd18
             },
             icon: Stack(
               clipBehavior: Clip.none,
@@ -215,8 +220,6 @@ class _MenuPageState extends State<MenuPage> {
               ],
             ),
           ),
-
-          //TOMBOL RIWAYAT
           IconButton(
             icon: const Icon(Icons.history),
             tooltip: "riwayat transaksi",
@@ -266,8 +269,7 @@ class _MenuPageState extends State<MenuPage> {
                   color: Colors.red,
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 20.0),
-                  child:
-                      const Icon(Icons.delete, color: Colors.white, size: 30),
+                  child: const Icon(Icons.delete, color: Colors.white, size: 30),
                 ),
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.startToEnd) {
@@ -309,11 +311,19 @@ class _MenuPageState extends State<MenuPage> {
                 },
                 child: GestureDetector(
                   onTap: () {
+                    // Bersihkan string harga dari "Rp" atau titik pembatas ribuan sebelum diubah ke int
+                    String hargaBersih = kopi.price
+                        .replaceAll('Rp', '')
+                        .replaceAll('.', '')
+                        .replaceAll(' ', '');
+
+                    int hargaAngka = int.tryParse(hargaBersih) ?? 0;
+
                     CartService.addItem(
                       CartItem(
                         title: kopi.title,
                         image: kopi.image,
-                        price: int.parse(kopi.price),
+                        price: hargaAngka,
                       ),
                     );
 
@@ -321,10 +331,15 @@ class _MenuPageState extends State<MenuPage> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+<<<<<<< HEAD
                         duration: const Duration(seconds: 1),
                         content: Text(
                           "${kopi.title} ditambahkan ke keranjang",
                         ),
+=======
+                        content: Text("${kopi.title} ditambahkan ke keranjang"),
+                        duration: const Duration(milliseconds: 800),
+>>>>>>> 29d7d80099b1d3d5487de1e319093c4cfb57cd18
                       ),
                     );
                   },
@@ -333,6 +348,32 @@ class _MenuPageState extends State<MenuPage> {
                     title: kopi.title,
                     description: kopi.description,
                     price: kopi.price,
+                    onTambah : () {
+                      String hargaBersih = kopi.price
+                      .replaceAll('Rp','')
+                      .replaceAll('.','')
+                      .replaceAll('','');
+
+                      int hargaAngka = int.tryParse(hargaBersih) ?? 0;
+
+
+                      CartService.addItem(
+                        CartItem(
+                          title: kopi.title,
+                          image: kopi.image,
+                          price: hargaAngka,
+                          ),
+                      );
+
+                      setState(() {});
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("${kopi.title} ditambahkan ke keranjang"),
+                          duration: const Duration(milliseconds: 800),
+                          ),
+                      );
+                    },
                   ),
                 ),
               );

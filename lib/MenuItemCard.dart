@@ -5,6 +5,7 @@ class MenuItemCard extends StatelessWidget {
   final String title;
   final String description;
   final String price;
+  final VoidCallback onTambah; // <--- Parameter aksi tambahan untuk tombol keranjang
 
   const MenuItemCard({
     super.key,
@@ -12,6 +13,7 @@ class MenuItemCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.price,
+    required this.onTambah, // Ditandai opsional (?) agar menu_page.dart lama tidak ikutan error
   });
 
   @override
@@ -72,10 +74,33 @@ class MenuItemCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    "Rp $price",
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold, color: Colors.brown),
+                  
+                  // Row Baru: Memisahkan Harga di kiri dan Tombol Tambah di pojok kanan bawah
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Rp $price",
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.brown),
+                      ),
+                      
+                      // Desain tombol plus bulat cokelat kecil
+                      SizedBox(
+                        width: 32,
+                        height: 32,
+                        child: IconButton(
+                          onPressed: onTambah,
+                          icon: const Icon(Icons.add, color: Colors.white, size: 16),
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.brown,
+                            padding: EdgeInsets.zero, // Bersihkan padding default biar icon pas di tengah
+                            shape: const CircleBorder(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
