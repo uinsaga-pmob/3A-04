@@ -11,6 +11,14 @@ class CartCheckoutPage extends StatefulWidget {
 
 class _CartCheckoutPageState extends State<CartCheckoutPage> {
   String paymentMethod = "QRIS";
+  final TextEditingController cashController =
+      TextEditingController();
+
+  int get cashAmount =>
+      int.tryParse(cashController.text) ?? 0;
+
+  int get change =>
+      cashAmount - total;
 
   int get subtotal => CartService.total;
 
@@ -110,7 +118,47 @@ class _CartCheckoutPageState extends State<CartCheckoutPage> {
                           paymentMethod = value!;
                         });
                       },
-                    ), 
+                    ),
+                    if (paymentMethod == "Cash") ...[
+                      const SizedBox(height: 15),
+
+                      TextFormField(
+                        controller: cashController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: "Uang Tunai",
+                          border: OutlineInputBorder(),
+                          prefixText: "Rp ",
+                        ),
+                        onChanged: (_) {
+                          setState(() {});
+                        },
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Kembalian",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            change >= 0
+                                ? "Rp $change"
+                                : "Uang Kurang Rp ${change.abs()}",
+                            style: TextStyle(
+                              color:
+                                  change >= 0 ? Colors.green : Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ], 
                   ],
                 ),
               ),
@@ -156,6 +204,18 @@ class _CartCheckoutPageState extends State<CartCheckoutPage> {
                   backgroundColor: Colors.brown,
                 ),
                 onPressed: () async {
+                  if (paymentMethod == "Cash" &&
+                      cashAmount < total) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Uang tunai tidak mencukupi",
+                        ),
+                      ),
+                    );
+                    return;
+                  }
+
                   final int finalTotal = total;
 
                   await saveTransaction();

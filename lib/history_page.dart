@@ -58,7 +58,7 @@ class _HistoryPageState extends State<HistoryPage> {
       body: history.isEmpty
           ? const Center(
               child: Text(
-                "Belum ada transaksi ☕",
+                "Belum ada transaksi",
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -107,7 +107,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         IconButton(
                           icon: const Icon(
                             Icons.delete,
-                            color: Colors.red,
+                            color: Color.fromARGB(255, 15, 15, 15),
                           ),
                           onPressed: () {
                             deleteHistory(

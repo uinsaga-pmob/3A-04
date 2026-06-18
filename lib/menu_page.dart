@@ -173,19 +173,12 @@ class _MenuPageState extends State<MenuPage> {
             onPressed: () async {
               await Navigator.push(
                 context,
-<<<<<<< HEAD
                 MaterialPageRoute(
                   builder: (_) => const CartPage(),
                 ),
               );
 
               setState(() {});
-=======
-                MaterialPageRoute(builder: (_) => const CartPage()),
-              ).then((_) {
-                setState(() {});
-              });
->>>>>>> 29d7d80099b1d3d5487de1e319093c4cfb57cd18
             },
             icon: Stack(
               clipBehavior: Clip.none,
@@ -331,15 +324,10 @@ class _MenuPageState extends State<MenuPage> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-<<<<<<< HEAD
                         duration: const Duration(seconds: 1),
                         content: Text(
                           "${kopi.title} ditambahkan ke keranjang",
                         ),
-=======
-                        content: Text("${kopi.title} ditambahkan ke keranjang"),
-                        duration: const Duration(milliseconds: 800),
->>>>>>> 29d7d80099b1d3d5487de1e319093c4cfb57cd18
                       ),
                     );
                   },
